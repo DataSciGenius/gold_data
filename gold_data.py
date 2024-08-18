@@ -4,15 +4,15 @@ import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Dosya adı
+# Constants
 DATA_FILE = 'gold_data.csv'
 
+# Load Data
 def load_data():
-    """Veriyi dosyadan yükle"""
+    """Load data from CSV file or create default data."""
     if os.path.exists(DATA_FILE):
         return pd.read_csv(DATA_FILE)
     else:
-        # Varsayılan veri oluştur
         data = {
             "Purchased_Date": ["2024-08-06"],
             "Gram_Per_CHF": [67.55075],
@@ -22,26 +22,23 @@ def load_data():
         }
         return pd.DataFrame(data)
 
-
+# Save Data
 def save_data(df):
-    """Veriyi dosyaya kaydet"""
+    """Save data to CSV file."""
     df.to_csv(DATA_FILE, index=False)
 
-
-# Streamlit arayüzü
+# Streamlit Interface
 st.title("Gold Purchase and Sale Management")
+st.sidebar.title("🪙 Gold Data 🪙")
 
-# Sol panel
-st.sidebar.title("💾 Gold Data 💾")
-
-# Veriyi yükle ve session_state'e atama
+# Load or initialize data
 if 'df' not in st.session_state:
     st.session_state.df = load_data()
 
-# İki sütunlu düzen
+# Layout with two columns
 col1, col2 = st.columns(2)
 
-# Sol paneldeki işlemler
+# Sidebar Options
 with st.sidebar.expander("**Add Purchase**"):
     purchased_date = st.date_input('Purchased Date')
     chf_per_gram = st.number_input('CHF Per Gram', format="%.2f")
@@ -89,11 +86,7 @@ with st.sidebar.expander("**Delete Row**"):
 
         if st.button('Delete Row'):
             if index_to_delete in st.session_state.df.index:
-                # Satırı sil
-                st.session_state.df = st.session_state.df.drop(index_to_delete)
-                # İndeksleri yeniden düzenle
-                st.session_state.df = st.session_state.df.reset_index(drop=True)
-                # Veriyi dosyaya kaydet
+                st.session_state.df = st.session_state.df.drop(index_to_delete).reset_index(drop=True)
                 save_data(st.session_state.df)
                 st.success('Row deleted successfully!')
             else:
@@ -102,24 +95,18 @@ with st.sidebar.expander("**Delete Row**"):
         st.write("No data to delete.")
 
 with st.sidebar.expander("**Current CHF per Gram**"):
-    # st.header('Current Gram Price in CHF')
     current_gram_price_in_chf = st.number_input('Enter Current CHF per Gram', format="%.2f")
 
 with st.sidebar.expander("**Net Profit per Gram in CHF**"):
-    # st.header('Net Profit in Gram')
     net_profit = st.number_input('Enter Net Profit per Gram in CHF', format="%.2f")
 
-# Ana sayfa düzeni
+# Main Page Content
 with col1:
     st.header('Current Data')
 
-    # Satırları renklendirme fonksiyonu
     def highlight_row(row):
-        color = 'red' if row['Type'] == 'Sale' else 'green'
-        return ['color: {}'.format(color)] * len(row)
+        return ['color: red' if row['Type'] == 'Sale' else 'color: green'] * len(row)
 
-
-    # Güncellenmiş DataFrame'i göster
     df = st.session_state.df
     styled_df = df.style.apply(highlight_row, axis=1)
     st.dataframe(styled_df)
@@ -127,7 +114,6 @@ with col1:
 with col2:
     st.header('Statistics')
 
-    # İstatistikleri hesapla
     purchases = df[df['Type'] == 'Purchase']
     sales = df[df['Type'] == 'Sale']
 
@@ -135,13 +121,11 @@ with col2:
     total_money_spent_in_chf = purchases['Cost'].sum()
     average_gram_price_in_chf = total_money_spent_in_chf / total_gold_quantity_in_gram if total_gold_quantity_in_gram != 0 else 0
     total_money_after_sold = sales['Cost'].sum()
-    net_profit_per_gram_in_chf = (
-                current_gram_price_in_chf - average_gram_price_in_chf) if total_gold_quantity_in_gram != 0 else 0
+    net_profit_per_gram_in_chf = current_gram_price_in_chf - average_gram_price_in_chf if total_gold_quantity_in_gram != 0 else 0
     total_profit_in_chf = total_gold_quantity_in_gram * net_profit_per_gram_in_chf
 
     decision = 'SELL' if net_profit_per_gram_in_chf > net_profit else 'KEEP'
 
-    # İstatistikleri göster
     dict_data = {
         'Outputs': [
             'Total Gold Quantity in Gram',
@@ -167,35 +151,28 @@ with col2:
     df_dict_data = pd.DataFrame(dict_data)
     st.write(df_dict_data)
 
-# Çizgi grafiği
+# Plotting Graphs
 with col2:
     st.header('Gold Metrics Over Time')
 
-    # Veriyi doğru formatta göster
-    # df['Purchased_Date'] = pd.to_datetime(df['Purchased_Date'])
     df_sorted = df.sort_values(by='Purchased_Date')
 
-    # Grafik oluşturma
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Gram_Per_CHF', label='Gram Per CHF', marker='o', ax=ax,
-                 color='blue')
+    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Gram_Per_CHF', label='Gram Per CHF', marker='o', ax=ax, color='blue')
     ax.set_title('Gold Metrics Over Time')
     ax.set_xlabel('Date')
     ax.set_ylabel('CHF Per Gram')
     ax.legend()
     st.pyplot(fig)
 
-    # Grafik oluşturma
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Quantity_Purchased', label='Quantity Purchased', marker='o',
-                 ax=ax, color='green')
+    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Quantity_Purchased', label='Quantity Purchased', marker='o', ax=ax, color='green')
     ax.set_title('Gold Metrics Over Time')
     ax.set_xlabel('Date')
     ax.set_ylabel('Quantity Purchased')
     ax.legend()
     st.pyplot(fig)
 
-    # Grafik oluşturma
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.lineplot(data=df_sorted, x='Purchased_Date', y='Cost', label='Cost', marker='o', ax=ax, color='red')
     ax.set_title('Gold Metrics Over Time')
