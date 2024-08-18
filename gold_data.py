@@ -139,17 +139,16 @@ with col2:
         ]
     }
     df_dict_data = pd.DataFrame(dict_data)
-    # df_dict_data.set_index('Outputs', inplace=True)
     st.write(df_dict_data)
 
 # Plotting Graphs
 with col2:
     st.header('Gold Metrics Over Time')
+
     df_sorted = df.sort_values(by='Purchased_Date')
-    sns.set_style('darkgrid')
 
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Gram_Per_CHF', label='Gram Per CHF', linestyle='--', marker='s', markersize=15, ax=ax, color='blue')
+    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Gram_Per_CHF', label='Gram Per CHF', marker='o', ax=ax, color='blue')
     ax.set_title('Gold Metrics Over Time')
     ax.set_xlabel('Date')
     ax.set_ylabel('CHF Per Gram')
@@ -157,7 +156,7 @@ with col2:
     st.pyplot(fig)
 
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.barplot(data=df_sorted, x='Purchased_Date', y='Quantity_Purchased', label='Quantity Purchased', linestyle='-.', marker='v', markersize=15, ax=ax, color='green')
+    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Quantity_Purchased', label='Quantity Purchased', marker='o', ax=ax, color='green')
     ax.set_title('Gold Metrics Over Time')
     ax.set_xlabel('Date')
     ax.set_ylabel('Quantity Purchased')
@@ -165,7 +164,7 @@ with col2:
     st.pyplot(fig)
 
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Cost', label='Cost', linestyle=':', marker='o', markersize=15, ax=ax, color='red')
+    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Cost', label='Cost', marker='o', ax=ax, color='red')
     ax.set_title('Gold Metrics Over Time')
     ax.set_xlabel('Date')
     ax.set_ylabel('Cost')
