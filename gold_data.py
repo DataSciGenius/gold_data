@@ -147,8 +147,10 @@ with col2:
 
     df_sorted = df.sort_values(by='Purchased_Date')
 
+    sns.set_style('darkgrid')
+
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Gram_Per_CHF', label='Gram Per CHF', marker='o', ax=ax, color='blue')
+    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Gram_Per_CHF', label='Gram Per CHF', marker='o', markersize=15, linestyle='--', ax=ax, color='blue')
     ax.set_title('Gold Metrics Over Time')
     ax.set_xlabel('Date')
     ax.set_ylabel('CHF Per Gram')
@@ -156,7 +158,7 @@ with col2:
     st.pyplot(fig)
 
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Quantity_Purchased', label='Quantity Purchased', marker='o', ax=ax, color='green')
+    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Quantity_Purchased', label='Quantity Purchased', marker='o', markersize=15, linestyle='--', ax=ax, color='green')
     ax.set_title('Gold Metrics Over Time')
     ax.set_xlabel('Date')
     ax.set_ylabel('Quantity Purchased')
@@ -164,7 +166,7 @@ with col2:
     st.pyplot(fig)
 
     fig, ax = plt.subplots(figsize=(10, 6))
-    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Cost', label='Cost', marker='o', ax=ax, color='red')
+    sns.lineplot(data=df_sorted, x='Purchased_Date', y='Cost', label='Cost', marker='o', markersize=15, linestyle='--', ax=ax, color='red')
     ax.set_title('Gold Metrics Over Time')
     ax.set_xlabel('Date')
     ax.set_ylabel('Cost')
