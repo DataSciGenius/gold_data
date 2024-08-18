@@ -1,6 +1,5 @@
 import pandas as pd
 import streamlit as st
-import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -10,17 +9,7 @@ DATA_FILE = 'gold_data.csv'
 # Load Data
 def load_data():
     """Load data from CSV file or create default data."""
-    if os.path.exists(DATA_FILE):
-        return pd.read_csv(DATA_FILE)
-    else:
-        data = {
-            "Purchased_Date": ["2024-08-06"],
-            "Gram_Per_CHF": [67.55075],
-            "Quantity_Purchased": [40],
-            "Cost": [2702.3],
-            "Type": ["Purchase"]
-        }
-        return pd.DataFrame(data)
+    return pd.read_csv(DATA_FILE)
 
 # Save Data
 def save_data(df):
