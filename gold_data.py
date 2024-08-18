@@ -145,9 +145,7 @@ with col2:
 # Plotting Graphs
 with col2:
     st.header('Gold Metrics Over Time')
-
     df_sorted = df.sort_values(by='Purchased_Date')
-
     sns.set_style('darkgrid')
 
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -156,7 +154,6 @@ with col2:
     ax.set_xlabel('Date')
     ax.set_ylabel('CHF Per Gram')
     ax.legend()
-    ax.grid()
     st.pyplot(fig)
 
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -165,7 +162,6 @@ with col2:
     ax.set_xlabel('Date')
     ax.set_ylabel('Quantity Purchased')
     ax.legend()
-    ax.grid()
     st.pyplot(fig)
 
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -174,5 +170,4 @@ with col2:
     ax.set_xlabel('Date')
     ax.set_ylabel('Cost')
     ax.legend()
-    ax.grid()
     st.pyplot(fig)
