@@ -101,14 +101,17 @@ with st.sidebar.expander("**Delete Row**"):
     else:
         st.write("No data to delete.")
 
-with st.sidebar.expander("**Current Gram Price in CHF**"):
-    st.header('Current Gram Price in CHF')
-    current_gram_price_in_chf = st.number_input('Current Gram Price in CHF', format="%.2f")
+with st.sidebar.expander("**Current CHF per Gram**"):
+    # st.header('Current Gram Price in CHF')
+    current_gram_price_in_chf = st.number_input('Enter Current CHF per Gram', format="%.2f")
+
+with st.sidebar.expander("**Net Profit per Gram in CHF**"):
+    # st.header('Net Profit in Gram')
+    net_profit = st.number_input('Enter Net Profit per Gram in CHF', format="%.2f")
 
 # Ana sayfa düzeni
 with col1:
     st.header('Current Data')
-
 
     # Satırları renklendirme fonksiyonu
     def highlight_row(row):
@@ -135,7 +138,8 @@ with col2:
     net_profit_per_gram_in_chf = (
                 current_gram_price_in_chf - average_gram_price_in_chf) if total_gold_quantity_in_gram != 0 else 0
     total_profit_in_chf = total_gold_quantity_in_gram * net_profit_per_gram_in_chf
-    decision = 'SELL' if net_profit_per_gram_in_chf > 2 else 'KEEP'
+
+    decision = 'SELL' if net_profit_per_gram_in_chf > net_profit else 'KEEP'
 
     # İstatistikleri göster
     dict_data = {
