@@ -92,7 +92,7 @@ with st.sidebar.expander("**Net Profit per Gram in CHF**"):
 
 # Main Page Content
 with col1:
-    st.header('Current Data')
+    st.header('Gold Data Purchased and Sold')
 
     def highlight_row(row):
         return ['color: red' if row['Type'] == 'Sale' else 'color: green'] * len(row)
