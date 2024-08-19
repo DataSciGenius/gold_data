@@ -114,7 +114,7 @@ with col2:
     net_profit_per_gram_in_chf = current_gram_price_in_chf - average_gram_price_in_chf if total_gold_quantity_in_gram != 0 else 0
     total_profit_in_chf = total_gold_quantity_in_gram * net_profit_per_gram_in_chf
 
-    decision = 'SELL' if net_profit_per_gram_in_chf > net_profit else 'KEEP'
+    decision = "SELL" if net_profit_per_gram_in_chf > 2 else "BUY" if net_profit_per_gram_in_chf < 1 else "KEEP"
 
     dict_data = {
         'Outputs': [
